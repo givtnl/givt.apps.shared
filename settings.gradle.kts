@@ -1,3 +1,4 @@
+include(":GivtCodeShare")
 pluginManagement {
     repositories {
         google()
@@ -8,4 +9,4 @@ pluginManagement {
 
 rootProject.name = "givtappsshared"
 include(":androidApp")
-include(":GivtShared")
+include(":GivtCodeShare")

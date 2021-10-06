@@ -1,27 +1,18 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     kotlin("android")
 }
-
+android {
+    compileSdkVersion(31)
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdkVersion(19)
+        targetSdkVersion(31)
+    }
+}
 dependencies {
-    implementation(project(":GivtShared"))
+    implementation(project(":GivtCodeShare"))
     implementation("com.google.android.material:material:1.3.0")
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-}
-
-android {
-    compileSdkVersion(31)
-    defaultConfig {
-        applicationId = "net.givtapp.shared.android"
-        minSdkVersion(19)
-        targetSdkVersion(31)
-        versionCode = 1
-        versionName = "1.0"
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
 }
