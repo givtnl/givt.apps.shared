@@ -4,7 +4,6 @@ plugins {
 }
 android {
     compileSdkVersion(31)
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdkVersion(19)
         targetSdkVersion(31)

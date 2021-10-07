@@ -4,12 +4,12 @@ import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextWatcher
-import net.givtapp.shared.Greeting
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
 import net.givtapp.shared.CreditCardValidator
 import android.text.Editable
 import androidx.core.content.ContextCompat
+import net.givtapp.codeshare.Greeting
 
 
 fun greet(): String {
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable) {
-                s.replace(0, ccValidator.getFormatted(s.toString()), )
+                s.replace(0, s.length, ccValidator.getFormatted(s.toString()))
             }
         })
 
