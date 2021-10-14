@@ -35,6 +35,6 @@ class CreditCardExpiryDateModel : YearMonth() {
         get() {
             if (year == null)
                 return "$month"
-            return "$month/${year.toString().substring(2)}"
+            return "${month.toString().padStart(2, '0')}/${year.toString().substring(2)}"
         }
 }

@@ -4,8 +4,11 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
 }
-
+repositories {
+    maven { url = uri("https://repo.repsy.io/mvn/chrynan/public") }
+}
 kotlin {
+
     android()
     ios {
         binaries {
@@ -15,9 +18,13 @@ kotlin {
         }
     }
     sourceSets {
+        val chrynanValidatorVersion = "0.4.1"
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
+                implementation("com.chrynan.validator:validator-phone:$chrynanValidatorVersion")
+                implementation("com.chrynan.validator:validator-email:$chrynanValidatorVersion")
+
             }
         }
         val commonTest by getting {
@@ -30,7 +37,7 @@ kotlin {
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:4.13.2")
             }
         }
         val iosMain by getting

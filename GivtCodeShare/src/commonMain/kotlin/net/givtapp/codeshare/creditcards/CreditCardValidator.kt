@@ -2,9 +2,10 @@ package net.givtapp.codeshare.creditcards
 
 import net.givtapp.codeshare.extensions.countOfDigits
 import net.givtapp.codeshare.extensions.isNull
+import kotlin.native.concurrent.ThreadLocal
 
 class CreditCardValidator {
-    val creditCard: CreditCard = CreditCard()
+    var creditCard: CreditCard = CreditCard()
 
     fun cardNumberIsValid(): Boolean {
         if (creditCard.number.isNullOrEmpty())
@@ -23,10 +24,14 @@ class CreditCardValidator {
     }
 
     fun securityCodeIsValid(): Boolean {
-        if (creditCard.securityCode.isNull)
+        if (creditCard.securityCode?.toInt().isNull)
             return false
-        return validationRule.isSecurityCodeValidWithRule(creditCard.securityCode!!.countOfDigits)
+        return validationRule.isSecurityCodeValidWithRule(creditCard.securityCode?.toInt()!!.countOfDigits)
     }
+
+    val isValidCreditCard: Boolean
+        get () = cardNumberIsValid() && expiryDateIsValid() && securityCodeIsValid()
+
 
     // Luhn validation
     private fun isValidLuhn(number: String): Boolean {

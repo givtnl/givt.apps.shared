@@ -21,10 +21,10 @@ class CreditCard {
     val expiryDate: CreditCardExpiryDateModel
         get () = creditCardExpiryDate
 
-    var securityCode: Int?
-        get () = creditCardSecurityCode
+    var securityCode: String?
+        get () = creditCardSecurityCode.toString()
         set (value) {
-            creditCardSecurityCode = value
+            creditCardSecurityCode = value?.toInt()
         }
 
     val formatted: String?

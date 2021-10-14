@@ -37,30 +37,30 @@ class CreditCardValidatorTests {
     fun ensureSecurityCodeValidates() {
         // Amex
         _creditCardValidator.creditCard.number = "371449635398431"
-        _creditCardValidator.creditCard.securityCode = 7373
+        _creditCardValidator.creditCard.securityCode = "7373"
         assertTrue { _creditCardValidator.securityCodeIsValid()}
         // MasterCard
         _creditCardValidator.creditCard.number = "5555555555554444"
-        _creditCardValidator.creditCard.securityCode = 737
+        _creditCardValidator.creditCard.securityCode = "737"
         assertTrue { _creditCardValidator.securityCodeIsValid()}
 
         // Visa
         _creditCardValidator.creditCard.number = "4917610000000000"
-        _creditCardValidator.creditCard.securityCode = 737
+        _creditCardValidator.creditCard.securityCode = "737"
         assertTrue { _creditCardValidator.securityCodeIsValid()}
 
         // Discovery
         _creditCardValidator.creditCard.number = "6011111111111117"
-        _creditCardValidator.creditCard.securityCode = 737
+        _creditCardValidator.creditCard.securityCode = "737"
         assertTrue { _creditCardValidator.securityCodeIsValid()}
 
         // Undefined
         _creditCardValidator.creditCard.number = "000000000000000"
-        _creditCardValidator.creditCard.securityCode = 1234
+        _creditCardValidator.creditCard.securityCode = "1234"
         assertTrue { _creditCardValidator.securityCodeIsValid()}
 
         _creditCardValidator.creditCard.number = "000000000000000000000"
-        _creditCardValidator.creditCard.securityCode = 123
+        _creditCardValidator.creditCard.securityCode = "123"
         assertTrue { _creditCardValidator.securityCodeIsValid()}
 
     }
