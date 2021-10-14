@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.text.TextWatcher
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
-import net.givtapp.shared.CreditCardValidator
 import android.text.Editable
 import androidx.core.content.ContextCompat
 import net.givtapp.codeshare.Greeting
+import net.givtapp.codeshare.creditcards.CreditCardValidator
 
 
 fun greet(): String {
@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         til_CC.editText!!.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (!ccValidator.isValidCreditCardNumber(s.toString())) {
+
+                if (!ccValidator.cardNumberIsValid()) {
                     til_CC.error = "Invalid credit card"
                     til_CC.isErrorEnabled = true
                 } else {
@@ -41,18 +42,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                ccValidator.creditCard.number = s.toString()
             }
 
             override fun afterTextChanged(s: Editable) {
-                s.replace(0, s.length, ccValidator.getFormatted(s.toString()))
+                s.replace(0, s.length, ccValidator.creditCard.formatted)
             }
         })
-
-        val validationResult = ccValidator.validate(arrayOf("", ""))
-        if(validationResult.isValid) {
-            print(validationResult.formatted)
-        } else {
-            print(validationResult.error)
-        }
     }
 }

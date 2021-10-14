@@ -3,7 +3,8 @@ import GivtCodeShare
 
 struct ContentView: View {
 	let greet = Greeting().greeting()
-
+    let validator = CreditCardValidator()	
+    
 	var body: some View {
 		Text(greet)
 	}

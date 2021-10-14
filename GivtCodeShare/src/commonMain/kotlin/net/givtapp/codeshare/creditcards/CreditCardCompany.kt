@@ -5,5 +5,5 @@ enum class CreditCardCompany {
     Visa,
     Mastercard,
     AmericanExpress,
-    Discovery
+    Discover
 }

@@ -1,51 +1,119 @@
 package net.givtapp.codeshare.creditcards
 
+import kotlinx.datetime.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class CreditCardValidatorTests {
-    // Nog testen op letters
-    // CreditCard testen
+    private val _creditCardValidator = CreditCardValidator()
+
     @Test
-    fun ensureCreditCardThatStartsWithTwoOrFiveHasLengthSixteen() {
-        // Valid MasterCard credit cards
-        assertTrue { CreditCardValidator().creditCardIsValid("2000 0000 0000 0000") }
-        assertTrue { CreditCardValidator().creditCardIsValid("5000 0000 0000 0000") }
-        // Invalid MasterCard credit cards
-        assertFalse { CreditCardValidator().creditCardIsValid("200000000000000") }
-        assertFalse { CreditCardValidator().creditCardIsValid("5000 0000 0000 000") }
-        assertFalse { CreditCardValidator().creditCardIsValid("20000000000000000") }
-        assertFalse { CreditCardValidator().creditCardIsValid("5000 0000 0000 00000") }
+    fun ensureCompanyGetterWorksAsExpected() {
+        _creditCardValidator.creditCard.number = "5"
+        assertTrue { _creditCardValidator.creditCard.company == CreditCardCompany.Mastercard }
+    }
+    @Test
+    fun ensureBadCreditCardNumberIsInvalid() {
+        assertTrue {
+            _creditCardValidator.creditCard.number = "5555341244441115"
+            _creditCardValidator.cardNumberIsValid()
+        }
+        assertTrue {
+            _creditCardValidator.creditCard.number = "2222410700000002"
+            _creditCardValidator.cardNumberIsValid()
+        }
+        assertFalse {
+            _creditCardValidator.creditCard.number = "555534124444111"
+            _creditCardValidator.cardNumberIsValid()
+        }
+        assertFalse {
+            _creditCardValidator.creditCard.number = "222241070000000"
+            _creditCardValidator.cardNumberIsValid()
+        }
     }
 
     @Test
-    fun ensureCreditCardsWithThirteenToNineteenDigitsValidate() {
-        // Valid Unknown credit cards
-        assertTrue { CreditCardValidator().creditCardIsValid("0000 0000 0000 0") }
-        assertTrue { CreditCardValidator().creditCardIsValid("0000 0000 0000 00") }
-        assertTrue { CreditCardValidator().creditCardIsValid("0000 0000 0000 000") }
-        assertTrue { CreditCardValidator().creditCardIsValid("0000 0000 0000 0000") }
-        assertTrue { CreditCardValidator().creditCardIsValid("0000 0000 0000 0000 0") }
-        assertTrue { CreditCardValidator().creditCardIsValid("0000 0000 0000 0000 00") }
-        assertTrue { CreditCardValidator().creditCardIsValid("0000 0000 0000 0000 000") }
+    fun ensureSecurityCodeValidates() {
+        // Amex
+        _creditCardValidator.creditCard.number = "371449635398431"
+        _creditCardValidator.creditCard.securityCode = 7373
+        assertTrue { _creditCardValidator.securityCodeIsValid()}
+        // MasterCard
+        _creditCardValidator.creditCard.number = "5555555555554444"
+        _creditCardValidator.creditCard.securityCode = 737
+        assertTrue { _creditCardValidator.securityCodeIsValid()}
+
+        // Visa
+        _creditCardValidator.creditCard.number = "4917610000000000"
+        _creditCardValidator.creditCard.securityCode = 737
+        assertTrue { _creditCardValidator.securityCodeIsValid()}
+
+        // Discovery
+        _creditCardValidator.creditCard.number = "6011111111111117"
+        _creditCardValidator.creditCard.securityCode = 737
+        assertTrue { _creditCardValidator.securityCodeIsValid()}
+
+        // Undefined
+        _creditCardValidator.creditCard.number = "000000000000000"
+        _creditCardValidator.creditCard.securityCode = 1234
+        assertTrue { _creditCardValidator.securityCodeIsValid()}
+
+        _creditCardValidator.creditCard.number = "000000000000000000000"
+        _creditCardValidator.creditCard.securityCode = 123
+        assertTrue { _creditCardValidator.securityCodeIsValid()}
+
     }
+
+    @Test
+    fun ensureUndefinedCompanyCreditCardsValidate() {
+        val validUndefinedNumbers = arrayOf(
+            "0000000000000",
+            "00000000000000",
+            "000000000000000",
+            "0000000000000000",
+            "00000000000000000",
+            "000000000000000000",
+            "0000000000000000000"
+        )
+        validUndefinedNumbers.forEach {
+            _creditCardValidator.creditCard.number = it
+            assertTrue {
+                _creditCardValidator.cardNumberIsValid()
+            }
+        }
+    }
+
     @Test
     fun ensureCreditCardCannotBeNullOrWhiteSpaceOrEmpty() {
-        assertFalse { CreditCardValidator().creditCardIsValid("    ") }
-        assertFalse { CreditCardValidator().creditCardIsValid("") }
+        assertFalse {
+            _creditCardValidator.creditCard.number = "     "
+            _creditCardValidator.cardNumberIsValid()
+        }
+        assertFalse {
+            _creditCardValidator.creditCard.number = " "
+            _creditCardValidator.cardNumberIsValid()
+        }
     }
 
     @Test
-    fun ensureExpiryDateInThePastIsNotValid() {
-        assertFalse { CreditCardValidator().expiryDateIsValid(9, 2021) }
+    fun ensureExpiryDateCannotBeInThePast() {
+        _creditCardValidator.creditCard.expiryDate.month = 9
+        _creditCardValidator.creditCard.expiryDate.month = 2021
+        assertFalse { _creditCardValidator.expiryDateIsValid() }
     }
+
     @Test
     fun ensureExpiryDateAtThisMonthIsValid() {
-        assertTrue { CreditCardValidator().expiryDateIsValid(10, 2021) }
+        _creditCardValidator.creditCard.expiryDate.month = _creditCardValidator.localDate.monthNumber
+        _creditCardValidator.creditCard.expiryDate.month = _creditCardValidator.localDate.year
+        assertTrue { _creditCardValidator.expiryDateIsValid() }
     }
+
     @Test
     fun ensureExpiryDateValidatesWhenMonthAndYearAreInTheFuture() {
-        assertTrue { CreditCardValidator().expiryDateIsValid(3, 2026) }
+        _creditCardValidator.creditCard.expiryDate.month = 1
+        _creditCardValidator.creditCard.expiryDate.year = _creditCardValidator.localDate.year + 1
+        assertTrue { _creditCardValidator.expiryDateIsValid() }
     }
 }

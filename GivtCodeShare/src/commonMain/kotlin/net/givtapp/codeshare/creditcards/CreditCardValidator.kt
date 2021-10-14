@@ -1,32 +1,33 @@
 package net.givtapp.codeshare.creditcards
 
-import kotlinx.datetime.LocalDate
-import net.givtapp.codeshare.extensions.containsOnlyDigitsOrWhitespace
-import net.givtapp.codeshare.extensions.daysInMonth
+import net.givtapp.codeshare.extensions.countOfDigits
+import net.givtapp.codeshare.extensions.isNull
 
 class CreditCardValidator {
-    fun creditCardIsValid(userInput: String): Boolean {
-        return if (userInput.containsOnlyDigitsOrWhitespace())
-            isValidCreditCard(CreditCard(userInput))
-        else false
+    val creditCard: CreditCard = CreditCard()
+
+    fun cardNumberIsValid(): Boolean {
+        if (creditCard.number.isNullOrEmpty())
+            return false
+        if (!validationRule.isCardNumberValidWithRule(creditCard.number!!))
+            return false
+        return isValidLuhn(creditCard.number!!)
+    }
+    fun expiryDateIsValid(): Boolean {
+        if (creditCard.expiryDate.month == null || creditCard.expiryDate.year == null)
+            return false
+        if (creditCard.expiryDate.month!! > 12 ||
+            creditCard.expiryDate.year!!  < localDate.year)
+            return false
+        return creditCard.expiryDate.lastDayOfYearMonthDate >= localDate
     }
 
-    fun expiryDateIsValid(month: Int, year: Int): Boolean {
-        return if (month > 12 || year < localDate.year)
-            false
-        else isInFuture(month, year)
+    fun securityCodeIsValid(): Boolean {
+        if (creditCard.securityCode.isNull)
+            return false
+        return validationRule.isSecurityCodeValidWithRule(creditCard.securityCode!!.countOfDigits)
     }
 
-    private fun isValidCreditCard(creditCard: CreditCard): Boolean {
-        val creditCardValidationRule: CreditCardValidationRule =
-            creditCardValidationRules.getValidationRuleForCompany(creditCard.company)
-        return creditCardValidationRule.validateWithRule(creditCard.number.length) && isValidLuhn(creditCard.number)
-    }
-
-    private fun isInFuture(month: Int, year: Int): Boolean {
-        val daysInMonth = LocalDate.daysInMonth(month, year)
-        return LocalDate(year, month, daysInMonth) >= localDate
-    }
     // Luhn validation
     private fun isValidLuhn(number: String): Boolean {
         var checksum: Int = 0
@@ -40,4 +41,7 @@ class CreditCardValidator {
         }
         return checksum%10 == 0
     }
+
+    private val validationRule: CreditCardValidationRule
+        get () = creditCardValidationRules.getValidationRuleForCompany(creditCard.company)
 }
