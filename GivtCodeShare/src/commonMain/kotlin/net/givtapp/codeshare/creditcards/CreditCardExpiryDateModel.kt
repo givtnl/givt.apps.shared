@@ -12,7 +12,7 @@ class CreditCardExpiryDateModel : YearMonth() {
         get() = LocalDate.getLastDayOfYearMonth(this)
 
     override var year: Int?
-        get() = super.year.toString().substring(2).toInt()
+        get() = super.year
         set(value) {
             if (value != null && value.toString().count() == 2) {
                 val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -35,6 +35,6 @@ class CreditCardExpiryDateModel : YearMonth() {
         get() {
             if (year == null)
                 return "$month"
-            return "$month/$year"
+            return "$month/${year.toString().substring(2)}"
         }
 }
