@@ -11,23 +11,16 @@ class CreditCardExpiryDateModel : YearMonth() {
     val lastDayOfYearMonthDate: LocalDate
         get() = LocalDate.getLastDayOfYearMonth(this)
 
-    override var year: Int?
-        get() = super.year
-        set(value) {
-            if (value != null && value.toString().count() == 2) {
-                val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-                val yearPrefix: String = now.year.toString().substring(0, 2)
-                super.year = "$yearPrefix${value}".toInt()
-            }
-        }
-
     fun setValue(inputString: String) {
         val value = inputString.replace("/", "")
+        if (inputString.isBlank())
+            return
         if (value.count() <= 2)
             month = value.toInt()
         if (value.count() >= 3) {
             month = value.substring(0, 2).toInt()
-            year = value.substring(2).toInt()
+            val currentYear = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.year
+            year = (currentYear.toString().substring(0, 2)+value.substring(2)).toInt()
         }
     }
 

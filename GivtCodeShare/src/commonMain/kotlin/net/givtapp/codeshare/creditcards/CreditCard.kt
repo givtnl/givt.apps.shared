@@ -1,5 +1,6 @@
 package net.givtapp.codeshare.creditcards
 
+import net.givtapp.codeshare.extensions.isNull
 import net.givtapp.codeshare.extensions.toCardStyle
 
 class CreditCard {
@@ -22,9 +23,14 @@ class CreditCard {
         get () = creditCardExpiryDate
 
     var securityCode: String?
-        get () = creditCardSecurityCode.toString()
+        get () {
+            if (!creditCardSecurityCode.isNull)
+                return creditCardSecurityCode.toString()
+            return null
+        }
         set (value) {
-            creditCardSecurityCode = value?.toInt()
+            if (!value.isNullOrEmpty())
+                creditCardSecurityCode = value.toInt()
         }
 
     val formatted: String?

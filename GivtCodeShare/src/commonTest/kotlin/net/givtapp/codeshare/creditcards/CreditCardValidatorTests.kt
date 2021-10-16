@@ -1,12 +1,69 @@
 package net.givtapp.codeshare.creditcards
 
 import kotlinx.datetime.LocalDate
-import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class CreditCardValidatorTests {
     private val _creditCardValidator = CreditCardValidator()
+
+    @Test
+    fun ensureDoesNotThrowWhenSecurityCodeIsNull() {
+        var isValid = true
+        try {
+            _creditCardValidator.creditCard.securityCode = null
+        } catch(error: Error) {
+            isValid = false
+        }
+        assertTrue { isValid }
+    }
+
+    @Test
+    fun ensureExpiryDateGetsFormattedCorrectly() {
+        _creditCardValidator.creditCard.expiryDate.setValue("0330")
+        val expectedReturn = "03/30"
+        assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
+    }
+
+    @Test
+    fun ensureExpiryDateIsValidAfterFormatting() {
+        _creditCardValidator.creditCard.expiryDate.setValue("0330")
+        val expectedReturn = "03/30"
+        assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
+    }
+
+    @Test
+    fun ensureExpiryDateSetValueReturnsValidExpiryDateModel() {
+        _creditCardValidator.creditCard.expiryDate.setValue("0330")
+        val expectedReturn = CreditCardExpiryDateModel()
+        expectedReturn.month = 3
+        expectedReturn.year = 2030
+        assertEquals(expectedReturn.month, _creditCardValidator.creditCard.expiryDate.month)
+        assertEquals(expectedReturn.year, _creditCardValidator.creditCard.expiryDate.year)
+        assertTrue { _creditCardValidator.expiryDateIsValid() }
+    }
+
+    @Test
+    fun ensureDoesNotThrowWhenSecurityCodeIsEmpty() {
+        var isValid = true
+        try {
+            _creditCardValidator.creditCard.securityCode = ""
+        } catch(error: Error) {
+            isValid = false
+        }
+        assertTrue { isValid }
+    }
+
+    @Test
+    fun ensureDoesNotValidateWhenSecurityCodeIsNull() {
+        var isValid = true
+        try {
+            _creditCardValidator.creditCard.securityCode = null
+            _creditCardValidator.securityCodeIsValid()
+        } catch(error: Error) {
+            isValid = false
+        }
+        assertTrue { isValid }
+    }
 
     @Test
     fun ensureCompanyGetterWorksAsExpected() {
@@ -99,14 +156,14 @@ class CreditCardValidatorTests {
     @Test
     fun ensureExpiryDateCannotBeInThePast() {
         _creditCardValidator.creditCard.expiryDate.month = 9
-        _creditCardValidator.creditCard.expiryDate.month = 2021
+        _creditCardValidator.creditCard.expiryDate.year = 2021
         assertFalse { _creditCardValidator.expiryDateIsValid() }
     }
 
     @Test
     fun ensureExpiryDateAtThisMonthIsValid() {
         _creditCardValidator.creditCard.expiryDate.month = _creditCardValidator.localDate.monthNumber
-        _creditCardValidator.creditCard.expiryDate.month = _creditCardValidator.localDate.year
+        _creditCardValidator.creditCard.expiryDate.year = _creditCardValidator.localDate.year
         assertTrue { _creditCardValidator.expiryDateIsValid() }
     }
 

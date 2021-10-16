@@ -19,4 +19,15 @@ class RegistrationValidatorTests {
         _registrationValidator.password = "Test123"
         assertTrue { _registrationValidator.isValidPassword }
     }
+
+    @Test
+    fun ensurePhoneNumberValidates() {
+        _registrationValidator.phoneNumber = "+32495430410"
+        assertTrue { _registrationValidator.isValidPhoneNumber }
+    }
+
+    @Test
+    fun ensureEmailAddressValidates() {
+        _registrationValidator
+    }
 }
