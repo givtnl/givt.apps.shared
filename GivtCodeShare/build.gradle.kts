@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("com.android.library")
 }
 repositories {
@@ -17,14 +18,23 @@ kotlin {
             }
         }
     }
+    val chrynanValidatorVersion = "0.4.1"
+    val coroutinesVersion = "1.5.0-native-mt"
+    val serializationVersion = "1.3.0"
+    val datetimeVersion = "0.2.1"
+    val ktorVersion = "1.6.1"
+    val kodeinVersion = "7.8.0"
     sourceSets {
-        val chrynanValidatorVersion = "0.4.1"
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
                 implementation("com.chrynan.validator:validator-phone:$chrynanValidatorVersion")
                 implementation("com.chrynan.validator:validator-email:$chrynanValidatorVersion")
-
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                api("org.kodein.di:kodein-di:$kodeinVersion")
             }
         }
         val commonTest by getting {
@@ -33,14 +43,22 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+            }
+        }
         val iosTest by getting
     }
 }
