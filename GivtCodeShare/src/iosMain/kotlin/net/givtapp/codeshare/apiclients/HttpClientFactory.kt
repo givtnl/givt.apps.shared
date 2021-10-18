@@ -22,9 +22,7 @@ internal actual class HttpClientFactory {
                     URLBuilder().takeFrom(baseUrl).apply {
                         encodedPath += url.encodedPath
                     })
-                headers {
-                    append(HttpHeaders.ContentType, "application/json")
-                }
+                header(HttpHeaders.ContentType, "application/json")
             }
             engine {
                 // this: IosClientEngineConfig

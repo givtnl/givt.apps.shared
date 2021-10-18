@@ -23,8 +23,6 @@ class YearMonth {
             if (oldValue == newValue || newValue.filter { !it.isDigit() }.count() >= 1)
                 return
 
-            var canContinue = true
-
             if (newValue.isNotEmpty()) {
                 val monthPlaceholder = StringBuilder()
                 val yearPlaceholder = StringBuilder()
