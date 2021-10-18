@@ -1,11 +1,14 @@
 package net.givtapp.codeshare.creditcards
 
-import net.givtapp.codeshare.extensions.isNull
-import net.givtapp.codeshare.extensions.toCardStyle
+import net.givtapp.codeshare.infrastructure.extensions.isNull
+import net.givtapp.codeshare.infrastructure.extensions.toCardStyle
+import net.givtapp.codeshare.infrastructure.models.YearMonth
 
 class CreditCard {
     private var creditCardNumber: String? = null
-    private var creditCardExpiryDate: CreditCardExpiryDateModel = CreditCardExpiryDateModel()
+    private var creditCardExpiryDate: YearMonth = YearMonth().apply {
+        rawValueChangedListener = YearMonth.RawValueChangedListener(this)
+    }
     private var creditCardSecurityCode: Int? = null
 
     val company: CreditCardCompany
@@ -14,21 +17,21 @@ class CreditCard {
         }
 
     var number: String?
-        get () = creditCardNumber?.filter { it.isDigit() }
+        get() = creditCardNumber?.filter { it.isDigit() }
         set(value) {
             creditCardNumber = value
         }
 
-    val expiryDate: CreditCardExpiryDateModel
-        get () = creditCardExpiryDate
+    val expiryDate: YearMonth
+        get() = creditCardExpiryDate
 
     var securityCode: String?
-        get () {
+        get() {
             if (!creditCardSecurityCode.isNull)
                 return creditCardSecurityCode.toString()
             return null
         }
-        set (value) {
+        set(value) {
             if (!value.isNullOrEmpty())
                 creditCardSecurityCode = value.toInt()
         }
@@ -38,7 +41,7 @@ class CreditCard {
 
 
     private val firstDigit: Int
-        get () = if (!number.isNullOrEmpty()) number!!.first().toString().toInt() else 0
+        get() = if (!number.isNullOrEmpty()) number!!.first().toString().toInt() else 0
 
     private fun getCreditCardCompany(): CreditCardCompany {
         return when (firstDigit) {

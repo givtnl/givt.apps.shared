@@ -3,6 +3,7 @@ package net.givtapp.codeshare.registration
 import com.chrynan.validator.EmailValidator
 import com.chrynan.validator.PhoneNumberValidator
 import com.chrynan.validator.isValid
+import net.givtapp.codeshare.infrastructure.validators.PasswordValidator
 
 class RegistrationValidator {
     var emailAddress: String = ""

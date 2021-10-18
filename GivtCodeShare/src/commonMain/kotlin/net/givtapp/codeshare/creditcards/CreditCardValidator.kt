@@ -1,6 +1,11 @@
 package net.givtapp.codeshare.creditcards
 
-import net.givtapp.codeshare.extensions.countOfDigits
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import net.givtapp.codeshare.infrastructure.extensions.countOfDigits
+import net.givtapp.codeshare.infrastructure.extensions.getLastDayOfYearMonth
 
 class CreditCardValidator {
     var creditCard: CreditCard = CreditCard()
@@ -12,13 +17,11 @@ class CreditCardValidator {
             return false
         return isValidLuhn(creditCard.number!!)
     }
+
     fun expiryDateIsValid(): Boolean {
-        if (creditCard.expiryDate.month == null || creditCard.expiryDate.year == null)
+        if (creditCard.expiryDate.month > 12 || creditCard.expiryDate.year < currentDate.year)
             return false
-        if (creditCard.expiryDate.month!! > 12 ||
-            creditCard.expiryDate.year!!  < localDate.year)
-            return false
-        return creditCard.expiryDate.lastDayOfYearMonthDate >= localDate
+        return LocalDate.getLastDayOfYearMonth(creditCard.expiryDate) >= currentDate
     }
 
     fun securityCodeIsValid(): Boolean {
@@ -28,7 +31,7 @@ class CreditCardValidator {
     }
 
     val isValidCreditCard: Boolean
-        get () = cardNumberIsValid() && expiryDateIsValid() && securityCodeIsValid()
+        get() = cardNumberIsValid() && expiryDateIsValid() && securityCodeIsValid()
 
     // Luhn validation
     private fun isValidLuhn(number: String): Boolean {
@@ -41,9 +44,47 @@ class CreditCardValidator {
             val n: Int = (number[i] - '0') * 2
             checksum += if (n > 9) n - 9 else n
         }
-        return checksum%10 == 0
+        return checksum % 10 == 0
     }
 
     private val validationRule: CreditCardValidationRule
-        get () = creditCardValidationRules.getValidationRuleForCompany(creditCard.company)
+        get() = creditCardValidationRules.getValidationRuleForCompany(creditCard.company)
+
+    private val currentDate: LocalDate
+        get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+    private val creditCardValidationRules: Collection<CreditCardValidationRule>
+        get() {
+            return listOf(
+                CreditCardValidationRule()
+                    .creditCardCompany(CreditCardCompany.Visa)
+                    .startsWith(4)
+                    .hasMaxLengthOf(16)
+                    .securityCodeLength(3),
+
+                CreditCardValidationRule()
+                    .creditCardCompany(CreditCardCompany.Mastercard)
+                    .startsWith(2, 5)
+                    .hasMaxLengthOf(16)
+                    .securityCodeLength(3),
+
+                CreditCardValidationRule()
+                    .creditCardCompany(CreditCardCompany.AmericanExpress)
+                    .startsWith(3)
+                    .hasMaxLengthOf(15)
+                    .securityCodeLength(4),
+
+                CreditCardValidationRule()
+                    .creditCardCompany(CreditCardCompany.Discover)
+                    .startsWith(6)
+                    .hasMaxLengthOf(16)
+                    .securityCodeLength(3),
+
+                CreditCardValidationRule()
+                    .creditCardCompany(CreditCardCompany.Undefined)
+                    .startsWith(0, 1, 7, 8, 9)
+                    .hasMaxLengthOf(13, 19)
+                    .securityCodeLength(3, 4)
+            )
+        }
 }

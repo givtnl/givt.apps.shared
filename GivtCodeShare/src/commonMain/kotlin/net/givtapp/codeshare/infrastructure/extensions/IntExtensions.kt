@@ -1,4 +1,4 @@
-package net.givtapp.codeshare.extensions
+package net.givtapp.codeshare.infrastructure.extensions
 
 val Int.digits: Array<Int>
     get() = this.toString().map { it.toString().toInt() }.toTypedArray()

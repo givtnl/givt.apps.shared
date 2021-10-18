@@ -1,4 +1,4 @@
-package net.givtapp.codeshare.registration
+package net.givtapp.codeshare.infrastructure.validators
 
 import com.chrynan.validator.*
 

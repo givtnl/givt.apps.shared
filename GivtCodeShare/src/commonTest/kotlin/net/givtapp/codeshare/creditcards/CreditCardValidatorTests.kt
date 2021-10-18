@@ -1,6 +1,6 @@
 package net.givtapp.codeshare.creditcards
 
-import kotlinx.datetime.LocalDate
+import net.givtapp.codeshare.infrastructure.models.YearMonth
 import kotlin.test.*
 
 class CreditCardValidatorTests {
@@ -19,22 +19,29 @@ class CreditCardValidatorTests {
 
     @Test
     fun ensureExpiryDateGetsFormattedCorrectly() {
-        _creditCardValidator.creditCard.expiryDate.setValue("0330")
+        _creditCardValidator.creditCard.expiryDate.rawValue = "0330"
+        val expectedReturn = "03/30"
+        assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
+    }
+
+    @Test
+    fun ensureExpiryDateGetsFormattedCorrectlyWithoutUserEnteringLeadingZero() {
+        _creditCardValidator.creditCard.expiryDate.rawValue = "330"
         val expectedReturn = "03/30"
         assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
     }
 
     @Test
     fun ensureExpiryDateIsValidAfterFormatting() {
-        _creditCardValidator.creditCard.expiryDate.setValue("0330")
+        _creditCardValidator.creditCard.expiryDate.rawValue = "0330"
         val expectedReturn = "03/30"
         assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
     }
 
     @Test
     fun ensureExpiryDateSetValueReturnsValidExpiryDateModel() {
-        _creditCardValidator.creditCard.expiryDate.setValue("0330")
-        val expectedReturn = CreditCardExpiryDateModel()
+        _creditCardValidator.creditCard.expiryDate.rawValue = "0330"
+        val expectedReturn = YearMonth()
         expectedReturn.month = 3
         expectedReturn.year = 2030
         assertEquals(expectedReturn.month, _creditCardValidator.creditCard.expiryDate.month)
@@ -162,15 +169,15 @@ class CreditCardValidatorTests {
 
     @Test
     fun ensureExpiryDateAtThisMonthIsValid() {
-        _creditCardValidator.creditCard.expiryDate.month = _creditCardValidator.localDate.monthNumber
-        _creditCardValidator.creditCard.expiryDate.year = _creditCardValidator.localDate.year
+        _creditCardValidator.creditCard.expiryDate.month = 10
+        _creditCardValidator.creditCard.expiryDate.year = 2021
         assertTrue { _creditCardValidator.expiryDateIsValid() }
     }
 
     @Test
     fun ensureExpiryDateValidatesWhenMonthAndYearAreInTheFuture() {
         _creditCardValidator.creditCard.expiryDate.month = 1
-        _creditCardValidator.creditCard.expiryDate.year = _creditCardValidator.localDate.year + 1
+        _creditCardValidator.creditCard.expiryDate.year = 2022
         assertTrue { _creditCardValidator.expiryDateIsValid() }
     }
 }
