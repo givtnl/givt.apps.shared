@@ -12,8 +12,8 @@ class YearMonth {
         rawValueChangedListener.onValueChanged(oldValue, newValue)
     }
 
-    internal var month: Int? = null
-    internal var year: Int? = null
+    var month: Int? = null
+    var year: Int? = null
 
     val formatted: String
         get() = "${month.toString().padStart(2, '0')}/${year.toString().substring(2)}"
