@@ -6,6 +6,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import net.givtapp.codeshare.infrastructure.extensions.countOfDigits
 import net.givtapp.codeshare.infrastructure.extensions.getLastDayOfYearMonth
+import net.givtapp.codeshare.infrastructure.extensions.isNull
 
 class CreditCardValidator {
     var creditCard: CreditCard = CreditCard()
@@ -19,7 +20,9 @@ class CreditCardValidator {
     }
 
     fun expiryDateIsValid(): Boolean {
-        if (creditCard.expiryDate.month > 12 || creditCard.expiryDate.year < currentDate.year)
+        if (creditCard.expiryDate.month.isNull || creditCard.expiryDate.year.isNull)
+            return false
+        if (creditCard.expiryDate.month!! > 12 || creditCard.expiryDate.year!! < currentDate.year)
             return false
         return LocalDate.getLastDayOfYearMonth(creditCard.expiryDate) >= currentDate
     }
