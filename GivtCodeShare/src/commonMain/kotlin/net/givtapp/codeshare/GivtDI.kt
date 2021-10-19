@@ -3,15 +3,18 @@ package net.givtapp.codeshare
 import io.ktor.client.*
 import net.givtapp.codeshare.apiclients.givt.userextension.UserExtensionClient
 import net.givtapp.codeshare.apiclients.givt.infra.InfraClient
-import net.givtapp.codeshare.apiclients.HttpClientFactory
+import net.givtapp.codeshare.apiclients.HttpClientProvider
+import net.givtapp.codeshare.apiclients.givt.account.AccountClient
 import org.kodein.di.*
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
-object GivtSDK {
+object GivtDI {
+    var bearerToken: String? = null
+
     private val sharedModule = DI.Module("App/Shared") {
-        bind<HttpClientFactory>() with singleton { HttpClientFactory() }
-        bind<HttpClient>() with singleton { instance<HttpClientFactory>().createHttpClient(instance("API_BASE_URL")) }
+        bind<HttpClientProvider>() with singleton { HttpClientProvider() }
+        bind<HttpClient>() with singleton { instance<HttpClientProvider>().getHttpClient(instance("API_BASE_URL")) }
         constant("API_BASE_URL") with "https://givt-debug-api.azurewebsites.net"
     }
 
@@ -23,7 +26,7 @@ object GivtSDK {
         bind<UserExtensionClient>() with singleton { instance() }
     }
 
-    val diContainer = DI {
+    private val diContainer = DI {
         importAll(
             sharedModule,
             utilitiesModule,
@@ -31,5 +34,7 @@ object GivtSDK {
         )
     }
 
-    fun infraClient() = diContainer.direct.instance<InfraClient>()
+    val infraClient get () = diContainer.direct.instance<InfraClient>()
+    val userExtensionClient get () = diContainer.direct.instance<InfraClient>()
+    val accountClient get () = diContainer.direct.instance<AccountClient>()
 }

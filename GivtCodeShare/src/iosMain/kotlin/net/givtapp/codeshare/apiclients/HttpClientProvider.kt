@@ -1,17 +1,20 @@
 package net.givtapp.codeshare.apiclients
 
 import io.ktor.client.*
-import io.ktor.client.engine.android.*
+import io.ktor.client.engine.ios.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.serialization.json.Json
+import platform.Foundation.NSUserDefaults
 
-internal actual class HttpClientFactory {
-    actual fun createHttpClient(baseUrl: String): HttpClient {
-        return HttpClient(Android) {
+internal actual class HttpClientProvider {
+    actual fun bearerToken(): String? {
+        return NSUserDefaults.standardUserDefaults.stringForKey("bearerToken")
+    }
+    actual fun getHttpClient(baseUrl: String): HttpClient {
+        return HttpClient(Ios) {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
                     prettyPrint = true
@@ -25,7 +28,10 @@ internal actual class HttpClientFactory {
                 header(HttpHeaders.ContentType, "application/json")
             }
             engine {
-                // this: AndroidEngineConfig
+                // this: IosClientEngineConfig
+                configureRequest {
+                    // this: NSMutableURLRequest
+                }
             }
         }
     }
