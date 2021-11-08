@@ -1,5 +1,6 @@
-package net.givtapp.codeshare.creditcards
+package net.givtapp.codeshare.creditcard
 
+import kotlinx.datetime.*
 import net.givtapp.codeshare.infrastructure.models.YearMonth
 import kotlin.test.*
 
@@ -169,8 +170,9 @@ class CreditCardValidatorTests {
 
     @Test
     fun ensureExpiryDateAtThisMonthIsValid() {
-        _creditCardValidator.creditCard.expiryDate.month = 10
-        _creditCardValidator.creditCard.expiryDate.year = 2021
+        val localSystemTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        _creditCardValidator.creditCard.expiryDate.month = localSystemTime.monthNumber
+        _creditCardValidator.creditCard.expiryDate.year = localSystemTime.year
         assertTrue { _creditCardValidator.expiryDateIsValid() }
     }
 

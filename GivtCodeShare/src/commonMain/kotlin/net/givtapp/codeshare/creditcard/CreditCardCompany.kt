@@ -1,4 +1,4 @@
-package net.givtapp.codeshare.creditcards
+package net.givtapp.codeshare.creditcard
 
 enum class CreditCardCompany {
     Undefined,

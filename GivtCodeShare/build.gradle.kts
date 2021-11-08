@@ -29,6 +29,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation("de.jodamob.kotlin:kotlin-runner-junit4:0.3.1")
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }

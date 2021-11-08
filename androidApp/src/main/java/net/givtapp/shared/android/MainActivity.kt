@@ -9,7 +9,7 @@ import com.google.android.material.textfield.TextInputLayout
 import android.text.Editable
 import androidx.core.content.ContextCompat
 import net.givtapp.codeshare.Greeting
-import net.givtapp.codeshare.creditcards.CreditCardValidator
+import net.givtapp.codeshare.creditcard.CreditCardValidator
 
 
 fun greet(): String {

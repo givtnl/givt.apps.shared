@@ -1,4 +1,4 @@
-package net.givtapp.codeshare.creditcards
+package net.givtapp.codeshare.creditcard
 
 internal fun Collection<CreditCardValidationRule>.getValidationRuleForCompany(creditCardCompany: CreditCardCompany): CreditCardValidationRule {
     return when (creditCardCompany) {

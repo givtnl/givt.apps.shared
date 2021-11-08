@@ -1,4 +1,4 @@
-package net.givtapp.codeshare.creditcards
+package net.givtapp.codeshare.creditcard
 
 import net.givtapp.codeshare.registration.RegistrationValidator
 import kotlin.test.Test

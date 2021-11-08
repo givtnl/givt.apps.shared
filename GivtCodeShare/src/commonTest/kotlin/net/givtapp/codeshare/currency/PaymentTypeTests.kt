@@ -1,6 +1,5 @@
-package currency
+package net.givtapp.codeshare.currency
 
-import net.givtapp.codeshare.currency.PaymentType
 import kotlin.test.Test
 import kotlin.test.assertTrue
 

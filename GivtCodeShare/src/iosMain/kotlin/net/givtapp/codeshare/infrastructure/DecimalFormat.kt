@@ -4,7 +4,6 @@ import platform.Foundation.NSLocale
 import platform.Foundation.NSNumber
 import platform.Foundation.NSNumberFormatter
 import platform.Foundation.NSNumberFormatterCurrencyStyle
-import platform.darwin.NSUInteger
 
 actual class DecimalFormat {
     actual fun format(double: Double, decimals: Int, locale: String): String {
@@ -14,5 +13,11 @@ actual class DecimalFormat {
         numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle
         numberFormatter.locale = NSLocale(locale)
         return numberFormatter.stringFromNumber(NSNumber(double))!!
+    }
+
+    actual fun getCurrencySymbol(locale: CustomLocale): Char {
+        val numberFormatter = NSNumberFormatter()
+        numberFormatter.locale = NSLocale(locale.toString())
+        return numberFormatter.currencySymbol.toCharArray().first()
     }
 }
