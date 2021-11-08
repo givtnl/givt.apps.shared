@@ -6,12 +6,12 @@ import platform.Foundation.NSNumberFormatter
 import platform.Foundation.NSNumberFormatterCurrencyStyle
 
 actual class DecimalFormat {
-    actual fun format(double: Double, decimals: Int, locale: String): String {
+    actual fun format(double: Double, decimals: Int, locale: CustomLocale): String {
         val numberFormatter = NSNumberFormatter()
         numberFormatter.minimumFractionDigits = decimals.toULong()
         numberFormatter.maximumFractionDigits = decimals.toULong()
         numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle
-        numberFormatter.locale = NSLocale(locale)
+        numberFormatter.locale = NSLocale(locale.toString())
         return numberFormatter.stringFromNumber(NSNumber(double))!!
     }
 
