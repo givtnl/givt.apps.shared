@@ -44,10 +44,7 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting {
-            dependencies {
-            }
-        }
+        val iosMain by getting
         val iosTest by getting
     }
 }
