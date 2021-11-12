@@ -9,5 +9,5 @@ class AccountDetailModel(
     val Primary: Boolean,
     val Active: Boolean,
     val Verified: Boolean,
-    val CreditCardDetails: CreditCardDetails
+    val CreditCardDetails: CreditCardDetails?
 )
