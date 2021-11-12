@@ -1,4 +1,6 @@
-package net.givtapp.codeshare.infrastructure
+package net.givtapp.codeshare.infrastructure.models
+
+import net.givtapp.codeshare.infrastructure.formatters.CurrencyFormatterException
 
 // CustomLocale is a representation of a Locale by language and country containing
 // Contains 2 char, seperator, 2 char. EG: nl-BE

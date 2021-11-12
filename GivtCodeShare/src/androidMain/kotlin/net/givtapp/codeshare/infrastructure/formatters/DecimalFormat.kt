@@ -1,5 +1,6 @@
-package net.givtapp.codeshare.infrastructure
+package net.givtapp.codeshare.infrastructure.formatters
 
+import net.givtapp.codeshare.infrastructure.models.CustomLocale
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*

@@ -1,5 +1,6 @@
 package net.givtapp.codeshare.infrastructure
 
+import net.givtapp.codeshare.infrastructure.formatters.CurrencyFormatter
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -7,41 +8,36 @@ class DecimalFormatTests {
     var currencyFormatter: CurrencyFormatter = CurrencyFormatter
     @Test
     fun ensureCurrencyAndAmountAreCorrectlyFormattedForTheNetherlands() {
-        currencyFormatter.setUserLocale("nl-NL")
         val expectedValue = "€${Typography.nbsp}1.234,56"
-        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f))
-        assertEquals(Typography.euro, currencyFormatter.getCurrencySymbol().first())
+        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f, true, "nl-NL"))
+        assertEquals(Typography.euro, currencyFormatter.getCurrencySymbol("nl-NL").first())
     }
 
     @Test
     fun ensureCurrencyAndAmountAreCorrectlyFormattedForBelgium() {
-        currencyFormatter.setUserLocale("nl-BE")
         val expectedValue = "€${Typography.nbsp}1.234,56"
-        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f))
-        assertEquals(Typography.euro, currencyFormatter.getCurrencySymbol().first())
+        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f, true, "nl-BE"))
+        assertEquals(Typography.euro, currencyFormatter.getCurrencySymbol("nl-BE").first())
     }
 
     @Test
     fun ensureCurrencyAndAmountAreCorrectlyFormattedForGermany() {
-        currencyFormatter.setUserLocale("de-DE")
         val expectedValue = "€${Typography.nbsp}1.234,56"
-        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f))
-        assertEquals(Typography.euro, currencyFormatter.getCurrencySymbol().first())
+        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f, true, "de-DE"))
+        assertEquals(Typography.euro, currencyFormatter.getCurrencySymbol("de-DE").first())
     }
 
     @Test
     fun ensureCurrencyAndAmountAreCorrectlyFormattedForUnitedKingdom() {
-        currencyFormatter.setUserLocale("en-GB")
         val expectedValue = "£1,234.56"
-        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f))
-        assertEquals(Typography.pound, currencyFormatter.getCurrencySymbol().first())
+        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f, true, "en-GB"))
+        assertEquals(Typography.pound, currencyFormatter.getCurrencySymbol("en-GB").first())
     }
 
     @Test
     fun ensureCurrencyAndAmountAreCorrectlyFormattedForUnitedStates() {
-        currencyFormatter.setUserLocale("en-US")
         val expectedValue = "$1,234.56"
-        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f))
-        assertEquals(Typography.dollar, currencyFormatter.getCurrencySymbol().first())
+        assertEquals(expectedValue, currencyFormatter.getLocalFormat(1234.56f, true, "en-US"))
+        assertEquals(Typography.dollar, currencyFormatter.getCurrencySymbol("en-US").first())
     }
 }
