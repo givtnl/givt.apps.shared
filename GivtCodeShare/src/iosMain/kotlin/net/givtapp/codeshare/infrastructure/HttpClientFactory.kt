@@ -32,11 +32,6 @@ actual class HttpClientFactory {
                     // this: NSMutableURLRequest
                 }
             }
-            ResponseObserver {
-                print("HTTP request to endpoint:"+it.request.url)
-                print("HTTP response status: " +it.status.value)
-                print("HTTP request took : " +it.requestTime.seconds * 1000)
-            }
         }
     }
 }

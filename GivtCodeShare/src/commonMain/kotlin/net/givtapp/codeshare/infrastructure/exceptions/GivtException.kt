@@ -8,17 +8,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import net.givtapp.codeshare.infrastructure.models.GivtHttpStatusCode
 
 
 class ClientRequestExceptionResponse(val response: HttpResponse) : Exception() {
     val statusCode: HttpStatusCode get () = response.status
     suspend inline fun <reified T>getServerResponse(): T {
-        val responseString = getServerResponseString()
-        return Json.decodeFromString(responseString)
-    }
-    suspend fun getServerResponseString(): String {
-        return response.content.readUTF8Line().toString()
+        val format = Json { ignoreUnknownKeys = true }
+        return format.decodeFromString(response.content.readUTF8Line().toString())
     }
 }
 
@@ -28,5 +26,3 @@ data class ServerResponseModel(
     val ErrorCode: GivtHttpStatusCode,
     val Message: String
 )
-
-class UnhandledException(val statusCode: HttpStatusCode, message: String) : Exception(message)

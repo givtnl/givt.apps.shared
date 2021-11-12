@@ -1,6 +1,15 @@
 package net.givtapp.codeshare.infrastructure.models
 
-enum class GivtHttpStatusCode(val code: Int) {
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+
+@Serializable(with = GivtHttpStatusCode.Companion.EnumSerializer::class)
+enum class GivtHttpStatusCode(val statusCode: Int) {
     Continue(100),
     SwitchingProtocols(101),
     Processing(102),
@@ -66,5 +75,23 @@ enum class GivtHttpStatusCode(val code: Int) {
     NotExtended(510),
     NetworkAuthenticationRequired(511),
 
-    Unknown(0)
+    Unknown(0);
+
+    companion object {
+        fun fromInt(value: Int) = values().first { it.statusCode == value }
+
+        open class EnumSerializer : KSerializer<GivtHttpStatusCode> {
+            override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+                "net.givtapp.shared.StatusCodeEnumSerializer", PrimitiveKind.INT)
+
+            override fun serialize(encoder: Encoder, value: GivtHttpStatusCode) {
+                encoder.encodeInt(value.statusCode)
+            }
+
+            override fun deserialize(decoder: Decoder): GivtHttpStatusCode =
+                decoder.decodeInt().let { value ->
+                    return fromInt(value)
+                }
+        }
+    }
 }
