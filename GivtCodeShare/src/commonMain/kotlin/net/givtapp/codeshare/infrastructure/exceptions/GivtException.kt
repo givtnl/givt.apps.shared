@@ -14,13 +14,17 @@ import net.givtapp.codeshare.infrastructure.models.GivtHttpStatusCode
 class ClientRequestExceptionResponse(val response: HttpResponse) : Exception() {
     val statusCode: HttpStatusCode get () = response.status
     suspend inline fun <reified T>getServerResponse(): T {
-        return Json.decodeFromString(response.content.readUTF8Line().toString())
+        val responseString = getServerResponseString()
+        return Json.decodeFromString(responseString)
+    }
+    suspend fun getServerResponseString(): String {
+        return response.content.readUTF8Line().toString()
     }
 }
 
 @Serializable
 data class ServerResponseModel(
-    val AdditionalInformation: HashMap<String, @Contextual Any>? = null,
+    val AdditionalInformation: HashMap<String, String>? = null,
     val ErrorCode: GivtHttpStatusCode,
     val Message: String
 )

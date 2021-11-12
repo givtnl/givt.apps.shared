@@ -42,7 +42,7 @@ class GivtApi {
                     url { pathComponents( "api", "v2", "users", userId, "accounts")}
                     body = registerCreditCardCommandBody
                     headers {
-                        header("Authorization", bearerToken)
+                        header("Authorization", "Bearer $bearerToken")
                     }
                 }
                 return response.receive()
@@ -53,7 +53,7 @@ class GivtApi {
                 val response: HttpResponse = httpClient.get {
                     url { pathComponents("api", "v2", "users", userId, "accounts") }
                     headers {
-                        header("Authorization", bearerToken)
+                        header("Authorization", "Bearer $bearerToken")
                     }
                 }
                 return response.receive()
