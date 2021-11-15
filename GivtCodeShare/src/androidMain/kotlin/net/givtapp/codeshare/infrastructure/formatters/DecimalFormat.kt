@@ -9,13 +9,13 @@ actual class DecimalFormat {
     actual fun format(double: Double, decimals: Int, locale: CustomLocale): String {
         val userLocale = Locale(locale.language, locale.country)
         val numberFormat = NumberFormat.getCurrencyInstance(userLocale)
+        numberFormat.minimumFractionDigits = decimals
+        numberFormat.maximumFractionDigits = decimals
         return numberFormat.format(double)
     }
     actual fun getCurrencySymbol(locale: CustomLocale): Char {
         val userLocale = Locale(locale.language, locale.country)
-//        val numberFormat = NumberFormat.getCurrencyInstance(userLocale)
         val decimalFormatSymbols = DecimalFormatSymbols.getInstance(userLocale)
-//            decimalFormatSymbols.net.givtapp.codeshare.currency = numberFormat.net.givtapp.codeshare.currency
         return decimalFormatSymbols.currencySymbol.toCharArray().first()
     }
 }
