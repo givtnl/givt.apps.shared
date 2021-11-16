@@ -5,9 +5,6 @@ plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
 }
-repositories {
-    maven { url = uri("https://repo.repsy.io/mvn/chrynan/public") }
-}
 kotlin {
 
     android()
@@ -18,15 +15,12 @@ kotlin {
             }
         }
     }
-    val chrynanValidatorVersion = "0.4.1"
     val datetimeVersion = "0.2.1"
     val ktorVersion = "1.6.5"
     val kotlinSerializationVersion = "1.2.2"
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("com.chrynan.validator:validator-phone:$chrynanValidatorVersion")
-                implementation("com.chrynan.validator:validator-email:$chrynanValidatorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
 
                 // Ktor networking
