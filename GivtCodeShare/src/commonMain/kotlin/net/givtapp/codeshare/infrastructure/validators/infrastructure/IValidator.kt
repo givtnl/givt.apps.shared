@@ -1,5 +1,6 @@
 package net.givtapp.codeshare.infrastructure.validators.infrastructure
 
+// The infrastructure for validators and validating is from https://github.com/chRyNaN/validator
 /**
  * A [Validator] performs validation on an input type of [T] and returns a [ValidationResult] of type [R]. This
  * validation process determines whether the provided input to the [validate] function matches an expected format
