@@ -24,7 +24,8 @@ class CreditCardValidator {
             return false
         if (creditCard.expiryDate.month!! > 12 || creditCard.expiryDate.year!! < currentDate.year)
             return false
-        return LocalDate.getLastDayOfYearMonth(creditCard.expiryDate) >= currentDate
+        val dateFromYearMonth = LocalDate.getLastDayOfYearMonth(creditCard.expiryDate)
+        return dateFromYearMonth >= currentDate
     }
 
     fun securityCodeIsValid(): Boolean {
