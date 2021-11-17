@@ -19,29 +19,22 @@ class CreditCardValidatorTests {
     }
 
     @Test
-    fun ensureExpiryDateGetsFormattedCorrectly() {
+    fun ensureExpiryDateWithoutSlashIsInvalid() {
         _creditCardValidator.creditCard.expiryDate.rawValue = "0330"
-        val expectedReturn = "03/30"
-        assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
+        val expectedReturn = false
+        assertEquals(expectedReturn, _creditCardValidator.expiryDateIsValid())
     }
 
     @Test
     fun ensureExpiryDateGetsFormattedCorrectlyWithoutUserEnteringLeadingZero() {
-        _creditCardValidator.creditCard.expiryDate.rawValue = "330"
-        val expectedReturn = "03/30"
-        assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
-    }
-
-    @Test
-    fun ensureExpiryDateIsValidAfterFormatting() {
-        _creditCardValidator.creditCard.expiryDate.rawValue = "0330"
+        _creditCardValidator.creditCard.expiryDate.rawValue = "3/30"
         val expectedReturn = "03/30"
         assertEquals(expectedReturn, _creditCardValidator.creditCard.expiryDate.formatted)
     }
 
     @Test
     fun ensureExpiryDateSetValueReturnsValidExpiryDateModel() {
-        _creditCardValidator.creditCard.expiryDate.rawValue = "0330"
+        _creditCardValidator.creditCard.expiryDate.rawValue = "3/30"
         val expectedReturn = YearMonth()
         expectedReturn.month = 3
         expectedReturn.year = 2030
