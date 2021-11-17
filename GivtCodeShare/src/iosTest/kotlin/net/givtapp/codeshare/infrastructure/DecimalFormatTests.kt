@@ -1,5 +1,6 @@
 package net.givtapp.codeshare.infrastructure
 
+import net.givtapp.codeshare.infrastructure.formatters.DecimalFormat
 import kotlin.test.Test
 import kotlin.test.assertTrue
 

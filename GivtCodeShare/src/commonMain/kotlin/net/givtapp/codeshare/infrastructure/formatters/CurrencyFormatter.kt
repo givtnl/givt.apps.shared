@@ -1,4 +1,6 @@
-package net.givtapp.codeshare.infrastructure
+package net.givtapp.codeshare.infrastructure.formatters
+
+import net.givtapp.codeshare.infrastructure.models.CustomLocale
 
 object CurrencyFormatter {
     fun getLocalFormat(value: Float, decimals: Boolean = true, localeString: String): String {

@@ -1,9 +1,9 @@
 package net.givtapp.codeshare.registration
 
-import com.chrynan.validator.EmailValidator
-import com.chrynan.validator.PhoneNumberValidator
-import com.chrynan.validator.isValid
+import net.givtapp.codeshare.infrastructure.validators.EmailValidator
 import net.givtapp.codeshare.infrastructure.validators.PasswordValidator
+import net.givtapp.codeshare.infrastructure.validators.PhoneNumberValidator
+import net.givtapp.codeshare.infrastructure.validators.infrastructure.isValid
 
 class RegistrationValidator {
     var emailAddress: String = ""

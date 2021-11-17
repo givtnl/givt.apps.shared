@@ -2,10 +2,8 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("com.android.library")
-}
-repositories {
-    maven { url = uri("https://repo.repsy.io/mvn/chrynan/public") }
 }
 kotlin {
 
@@ -17,15 +15,20 @@ kotlin {
             }
         }
     }
-    val chrynanValidatorVersion = "0.4.1"
     val datetimeVersion = "0.2.1"
+    val ktorVersion = "1.6.5"
+    val kotlinSerializationVersion = "1.2.2"
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("com.chrynan.validator:validator-phone:$chrynanValidatorVersion")
-                implementation("com.chrynan.validator:validator-email:$chrynanValidatorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
-            }
+
+                // Ktor networking
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                // Ktor serialization
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                // Kotlin serialization
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion")            }
         }
         val commonTest by getting {
             dependencies {
@@ -36,6 +39,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
         val androidTest by getting {
@@ -44,7 +48,11 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+            }
+        }
         val iosTest by getting
     }
 }
