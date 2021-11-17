@@ -1,5 +1,7 @@
 package net.givtapp.codeshare.infrastructure
 
+import net.givtapp.codeshare.infrastructure.formatters.CurrencyFormatter
+import net.givtapp.codeshare.infrastructure.formatters.CurrencyFormatterException
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -9,8 +11,7 @@ class CurrencyFormatterTests {
     fun ensureCorrectExceptionIsThrownWhenLocaleIsEmpty() {
         var exceptionIsThrown = false
         try {
-            currencyFormatter.userLocale = null
-            currencyFormatter.getLocalFormat(1234.56f)
+            currencyFormatter.getLocalFormat(1234.56f, true, "")
         } catch(error: Exception) {
             when(error) {
                 is CurrencyFormatterException -> exceptionIsThrown = true
@@ -23,8 +24,7 @@ class CurrencyFormatterTests {
     fun ensureCorrectExceptionIsThrownWhenLocaleFormatIsWrong() {
         var isValid = false
         try {
-            currencyFormatter.setUserLocale("enGB")
-            currencyFormatter.getLocalFormat(1234.56f)
+            currencyFormatter.getLocalFormat(1234.56f, true, "enGB")
         } catch(error: Exception) {
             isValid = error is CurrencyFormatterException
         }
@@ -35,8 +35,7 @@ class CurrencyFormatterTests {
     fun ensureValidLocaleDoesNotThrowWithValidLocal() {
         var isValid = true
         try {
-        currencyFormatter.setUserLocale("en-GB")
-        currencyFormatter.getLocalFormat(1234.56f)
+        currencyFormatter.getLocalFormat(1234.56f,true, "en-GB")
         } catch(error: Exception) {
             isValid = false
         }

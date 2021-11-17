@@ -1,5 +1,6 @@
 package net.givtapp.codeshare.infrastructure
 
+import net.givtapp.codeshare.infrastructure.models.CustomLocale
 import platform.Foundation.NSLocale
 import platform.Foundation.NSNumber
 import platform.Foundation.NSNumberFormatter

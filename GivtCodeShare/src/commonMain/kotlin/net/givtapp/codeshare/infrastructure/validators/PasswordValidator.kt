@@ -1,6 +1,6 @@
 package net.givtapp.codeshare.infrastructure.validators
 
-import com.chrynan.validator.*
+import net.givtapp.codeshare.infrastructure.validators.infrastructure.*
 
 internal class PasswordValidator : Validator<String?, String> {
     companion object {
@@ -15,7 +15,7 @@ internal class PasswordValidator : Validator<String?, String> {
     }
 }
 
-internal sealed class PasswordValidationError(override val details: String?) : ValidationError {
+internal sealed class PasswordValidationError(override val details: String?) : IValidationError {
     object InputIsNull : PasswordValidationError("Input is not a valid Password because it is null.")
     object InvalidFormat : PasswordValidationError("Input is not in a valid Password format.")
     object InvalidLength : PasswordValidationError("Input length is invalid")
