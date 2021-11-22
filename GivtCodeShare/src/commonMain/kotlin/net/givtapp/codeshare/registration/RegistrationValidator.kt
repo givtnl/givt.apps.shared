@@ -1,6 +1,7 @@
 package net.givtapp.codeshare.registration
 
 import net.givtapp.codeshare.infrastructure.validators.EmailValidator
+import net.givtapp.codeshare.infrastructure.validators.NameValidator
 import net.givtapp.codeshare.infrastructure.validators.PasswordValidator
 import net.givtapp.codeshare.infrastructure.validators.PhoneNumberValidator
 import net.givtapp.codeshare.infrastructure.validators.infrastructure.isValid
@@ -9,6 +10,8 @@ class RegistrationValidator {
     var emailAddress: String = ""
     var phoneNumber: String = ""
     var password: String = ""
+    var firstName: String = ""
+    var lastName: String = ""
 
     val isValidEmail: Boolean
         get () = EmailValidator().validate(emailAddress).isValid
@@ -18,4 +21,11 @@ class RegistrationValidator {
 
     val isValidPassword: Boolean
         get () = PasswordValidator().validate(password).isValid
+
+    val isValidFirstName: Boolean
+        get () = NameValidator().validate(firstName).isValid
+
+    val isValidLastName: Boolean
+        get () = NameValidator().validate(lastName).isValid
+
 }
