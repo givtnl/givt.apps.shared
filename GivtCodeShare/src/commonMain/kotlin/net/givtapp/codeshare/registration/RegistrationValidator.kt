@@ -29,3 +29,35 @@ class RegistrationValidator {
         get () = NameValidator().validate(lastName).isValid
 
 }
+
+class RegistrationFlowController {
+    var currentFlow: RegFlowType? = null
+    val currentFlowSteps: Array<RegFlowStep>
+        get () {
+            var array = arrayOf<RegFlowStep>()
+            if (currentFlow != null) {
+                array = FlowSteps[currentFlow] ?: array
+            }
+            return array
+        }
+
+}
+
+enum class RegFlowType {
+    US
+}
+enum class RegFlowStep {
+    emailPhoneNumberPasswordEntered,
+    creditCardDetailsEntered,
+    firstNameLastNameEntered
+}
+
+val RegistrationFlowController.FlowSteps: HashMap<RegFlowType, Array<RegFlowStep>>
+    get() {
+        return hashMapOf(
+            RegFlowType.US to arrayOf(
+                RegFlowStep.creditCardDetailsEntered,
+                RegFlowStep.emailPhoneNumberPasswordEntered,
+                RegFlowStep.firstNameLastNameEntered)
+        )
+    }
