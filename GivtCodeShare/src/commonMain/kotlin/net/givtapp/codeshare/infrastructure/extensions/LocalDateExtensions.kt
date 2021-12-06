@@ -3,7 +3,13 @@ import kotlinx.datetime.*
 import net.givtapp.codeshare.infrastructure.models.YearMonth
 
 fun LocalDate.Companion.getLastDayOfYearMonth(yearMonth: YearMonth): LocalDate {
-    return LocalDate(yearMonth.year!!, yearMonth.month!!, daysInMonth(yearMonth))
+    val year =
+        if (yearMonth.year.toString().length == 2) {
+            "20${yearMonth.year}"
+        } else {
+            yearMonth.year
+        }
+    return LocalDate(year.toString().toInt(), yearMonth.month!!, daysInMonth(yearMonth))
 }
 
 fun LocalDate.Companion.daysInMonth(yearMonth: YearMonth): Int {

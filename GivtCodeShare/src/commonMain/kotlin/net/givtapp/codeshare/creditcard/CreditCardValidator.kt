@@ -22,9 +22,10 @@ class CreditCardValidator {
     fun expiryDateIsValid(): Boolean {
         if (creditCard.expiryDate.month.isNull || creditCard.expiryDate.year.isNull)
             return false
-        if (creditCard.expiryDate.month!! > 12 || creditCard.expiryDate.year!! < currentDate.year)
+        if (creditCard.expiryDate.month!! > 12 || creditCard.expiryDate.year!! < currentDate.year.toString().takeLast(2).toInt())
             return false
-        return LocalDate.getLastDayOfYearMonth(creditCard.expiryDate) >= currentDate
+        val lastDayOfExpiryDate = LocalDate.getLastDayOfYearMonth(creditCard.expiryDate)
+        return lastDayOfExpiryDate >= currentDate
     }
 
     fun securityCodeIsValid(): Boolean {

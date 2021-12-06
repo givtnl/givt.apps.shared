@@ -18,7 +18,7 @@ class YearMonth {
     val formatted: String
         get() {
             return if (month != null && year != null)
-                "${month.toString().padStart(2, '0')}/${year.toString().substring(2)}"
+                "${month.toString().padStart(2, '0')}/${year.toString().padStart(2, '0')}"
             else
                 ""
         }
@@ -28,41 +28,21 @@ class YearMonth {
             if (oldValue == newValue || newValue.filter { !it.isDigit() }.count() >= 1)
                 return
             if (newValue.isNotEmpty()) {
-                val monthPlaceholder = StringBuilder()
-                val yearPlaceholder = StringBuilder()
-                charLoop@ for (char in newValue) {
-                    monthLoop@ while (monthPlaceholder.length < 2) {
-                        if (monthPlaceholder.isEmpty()) {
-                            if (IntRange(0, 1).contains(char.digitToInt())) {
-                                monthPlaceholder.append(char)
-                            } else if (IntRange(2, 9).contains(char.digitToInt())) {
-                                monthPlaceholder.append("0${char}")
-                            }
-                            yearMonth.month = monthPlaceholder.toString().toInt()
-                            continue@charLoop
-                        } else if (monthPlaceholder.length == 1) {
-                            if (monthPlaceholder.first().digitToInt() == 1 && IntRange(0, 2).contains(char.digitToInt())) {
-                                monthPlaceholder.append(char)
-                            } else if (monthPlaceholder.first().digitToInt() == 0 && IntRange(1, 9).contains(char.digitToInt())) {
-                                monthPlaceholder.append(char)
-                            } else {
-                                return
-                            }
-                            yearMonth.month = monthPlaceholder.toString().toInt()
-                            continue@charLoop
-
-                        }
+                var currentValue = newValue
+                if (currentValue.contains("/"))
+                    currentValue = currentValue.replace("/","")
+                when(currentValue.length) {
+                    1, 2 -> yearMonth.month = newValue.toInt()
+                    3 -> {
+                        yearMonth.month = currentValue.take(2).toInt()
+                        yearMonth.year = currentValue.takeLast(1).toInt()
                     }
-
-                    if (yearPlaceholder.isEmpty())
-                        yearPlaceholder.append(LocalDateTime.current.date.toString().substring(0, 2))
-
-                    yearWhile@ while (yearPlaceholder.length < 4) {
-                        yearPlaceholder.append(char)
-                        yearMonth.year = yearPlaceholder.toString().toInt()
-                        continue@charLoop
+                    4 -> {
+                        yearMonth.month = currentValue.take(2).toInt()
+                        yearMonth.year = currentValue.takeLast(2).toInt()
                     }
                 }
+
             }
             else {
                 yearMonth.month = null
