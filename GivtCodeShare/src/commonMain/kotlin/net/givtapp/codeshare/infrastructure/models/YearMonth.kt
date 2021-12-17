@@ -12,41 +12,63 @@ class YearMonth {
         rawValueChangedListener.onValueChanged(oldValue, newValue)
     }
 
+    // used for validation on the dates
     var month: Int? = null
     var year: Int? = null
 
+    // used for string validation
+    var monthString: String? = null
+    var yearString: String? = null
+
     val formatted: String
         get() {
-            return if (month != null && year != null)
-                "${month.toString().padStart(2, '0')}/${year.toString().padStart(2, '0')}"
-            else
+            return if (month != null && monthString?.length == 2 && year == null) {
+                "${monthString}/"
+            } else if (month != null && year != null && yearString?.length == 1)
+                "${monthString}/${yearString}"
+            else if (month != null && year != null)
+                "${monthString}/${yearString}"
+            else if (month == null && year == null) {
                 ""
+            }
+            else
+                "$month"
         }
 
     internal class RawValueChangedListener(private val yearMonth: YearMonth) : StringValueChangedListener() {
         override fun onValueChanged(oldValue: String, newValue: String) {
-            if (oldValue == newValue || newValue.filter { !it.isDigit() }.count() >= 1)
-                return
-            if (newValue.isNotEmpty()) {
-                var currentValue = newValue
-                if (currentValue.contains("/"))
-                    currentValue = currentValue.replace("/","")
-                when(currentValue.length) {
-                    1, 2 -> yearMonth.month = newValue.toInt()
-                    3 -> {
-                        yearMonth.month = currentValue.take(2).toInt()
-                        yearMonth.year = currentValue.takeLast(1).toInt()
-                    }
-                    4 -> {
-                        yearMonth.month = currentValue.take(2).toInt()
-                        yearMonth.year = currentValue.takeLast(2).toInt()
-                    }
-                }
 
-            }
-            else {
-                yearMonth.month = null
-                yearMonth.year = null
+            try {
+                if (oldValue == newValue || newValue.filter { !it.isDigit() && it != '/' }.count() >= 1 || (newValue.contains('/') && newValue.indexOf('/') != 2))
+                    return
+                if (newValue.isNotEmpty()) {
+                    var currentValue = newValue
+                    when(currentValue.length) {
+                        1, 2 -> {
+                            yearMonth.monthString = newValue
+                            yearMonth.month = newValue.toInt()
+                        }
+                        4 -> {
+                            yearMonth.monthString = currentValue.take(2)
+                            yearMonth.yearString = currentValue.takeLast(1)
+                            yearMonth.month = currentValue.take(2).toInt()
+                            yearMonth.year = currentValue.takeLast(1).toInt()
+                        }
+                        5 -> {
+                            yearMonth.monthString = currentValue.take(2)
+                            yearMonth.yearString = currentValue.takeLast(2)
+                            yearMonth.month = currentValue.take(2).toInt()
+                            yearMonth.year = currentValue.takeLast(2).toInt()
+                        }
+                    }
+
+                }
+                else {
+                    yearMonth.month = null
+                    yearMonth.year = null
+                }
+            } catch (exception: NumberFormatException) {
+                return
             }
         }
     }
