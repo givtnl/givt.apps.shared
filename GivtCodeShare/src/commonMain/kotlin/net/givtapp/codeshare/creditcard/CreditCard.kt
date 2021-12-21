@@ -27,13 +27,10 @@ class CreditCard {
 
     var securityCode: String?
         get() {
-            if (!creditCardSecurityCode.isNull)
-                return creditCardSecurityCode.toString()
-            return null
+            return if (!creditCardSecurityCode.isNull) creditCardSecurityCode.toString() else null
         }
         set(value) {
-            if (!value.isNullOrEmpty())
-                creditCardSecurityCode = value.toInt()
+            creditCardSecurityCode = if (!value.isNullOrEmpty()) value.toInt() else null
         }
 
     val formatted: String?
