@@ -50,12 +50,6 @@ class YearMonth {
                         }
                         4 -> {
                             yearMonth.monthString = currentValue.take(2)
-                            yearMonth.yearString = currentValue.takeLast(1)
-                            yearMonth.month = currentValue.take(2).toInt()
-                            yearMonth.year = currentValue.takeLast(1).toInt()
-                        }
-                        5 -> {
-                            yearMonth.monthString = currentValue.take(2)
                             yearMonth.yearString = currentValue.takeLast(2)
                             yearMonth.month = currentValue.take(2).toInt()
                             yearMonth.year = currentValue.takeLast(2).toInt()
