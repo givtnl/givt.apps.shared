@@ -30,8 +30,7 @@ class YearMonth {
                 "${monthString}/${yearString}"
             else if (month == null && year == null) {
                 ""
-            }
-            else
+            } else
                 "$month"
         }
 
@@ -43,10 +42,16 @@ class YearMonth {
                     return
                 if (newValue.isNotEmpty()) {
                     var currentValue = newValue
-                    when(currentValue.length) {
+                    when (currentValue.length) {
                         1, 2 -> {
                             yearMonth.monthString = newValue
                             yearMonth.month = newValue.toInt()
+                        }
+                        3 -> {
+                            yearMonth.monthString = currentValue.take(2)
+                            yearMonth.yearString = currentValue.takeLast(1)
+                            yearMonth.month = currentValue.take(2).toInt()
+                            yearMonth.year = currentValue.takeLast(1).toInt()
                         }
                         4 -> {
                             yearMonth.monthString = currentValue.take(2)
@@ -56,8 +61,7 @@ class YearMonth {
                         }
                     }
 
-                }
-                else {
+                } else {
                     yearMonth.month = null
                     yearMonth.year = null
                 }
