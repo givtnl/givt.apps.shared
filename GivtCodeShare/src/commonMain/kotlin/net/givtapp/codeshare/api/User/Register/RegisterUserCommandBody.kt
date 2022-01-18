@@ -11,6 +11,7 @@ open class RegisterUserCommandBody(
     var appLanguage: String,
     var deviceOS: Int,
     var country: String,
+    var postalCode: String,
     var firstName: String,
     var lastName: String,
     var timeZoneId: String)
