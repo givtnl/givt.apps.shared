@@ -1,23 +1,30 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
+    kotlin("native.cocoapods")
     id("com.android.library")
 }
-kotlin {
 
+version = "1.0"
+
+kotlin {
     android()
-    ios {
-        binaries {
-            framework {
-                baseName = "GivtCodeShare"
-            }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    cocoapods {
+        summary = "Givt Code Share"
+        homepage = "https://github.com/givtnl/givt.apps.shared"
+        ios.deploymentTarget = "11.0"
+        framework {
+            baseName = "GivtCodeShare"
         }
     }
-    val datetimeVersion = "0.2.1"
+
+    val datetimeVersion = "0.3.2"
     val ktorVersion = "1.6.5"
-    val kotlinSerializationVersion = "1.2.2"
+    val kotlinSerializationVersion = "1.3.2"
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -48,35 +55,35 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting {
+        val iosSimulatorArm64Main by getting
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
-        val iosTest by getting
+        val iosSimulatorArm64Test by getting
+        val iosX64Test by getting
+        val iosArm64Test by getting
+        val iosTest by creating {
+            dependsOn(commonTest)
+            iosX64Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
+            iosSimulatorArm64Test.dependsOn(this)
+        }
     }
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 31
     defaultConfig {
         minSdk = 21
         targetSdk = 31
     }
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
-
-val packForXcode by tasks.creating(Sync::class) {
-    group = "build"
-    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
-    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
-    val framework =
-        kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
-    inputs.property("mode", mode)
-    dependsOn(framework.linkTask)
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
-}
-tasks.getByName("build").dependsOn(packForXcode)

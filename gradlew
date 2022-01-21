@@ -16,6 +16,9 @@
 # limitations under the License.
 #
 
+### Custom by Maarten for MacOS
+java -version 2>&1 | grep 11 || export JAVA_HOME="/Applications/Android Studio.app/Contents/jre/Contents/Home"
+
 ##############################################################################
 ##
 ##  Gradle start up script for UN*X
