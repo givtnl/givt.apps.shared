@@ -23,7 +23,7 @@ kotlin {
     }
 
     val datetimeVersion = "0.3.2"
-    val ktorVersion = "1.6.7"
+    val ktorVersion = "1.6.5"
     val kotlinSerializationVersion = "1.3.2"
     sourceSets {
         val commonMain by getting {
