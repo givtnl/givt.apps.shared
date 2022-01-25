@@ -22,21 +22,10 @@ kotlin {
         }
     }
 
-    val datetimeVersion = "0.3.2"
     val ktorVersion = "1.6.5"
-    val kotlinSerializationVersion = "1.3.2"
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+        val commonMain by getting { }
 
-                // Ktor networking
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                // Ktor serialization
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-                // Kotlin serialization
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion")            }
-        }
         val commonTest by getting {
             dependencies {
                 implementation("de.jodamob.kotlin:kotlin-runner-junit4:0.3.1")
@@ -44,29 +33,64 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+
         val androidMain by getting {
+            val datetimeVersion = "0.3.2"
+            val kotlinSerializationVersion = "1.3.2"
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+                // Ktor networking
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                // Ktor serialization
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                // Kotlin serialization
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion")
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
+
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
             }
         }
+
         val iosSimulatorArm64Main by getting
+        val iosSimulatorMain by creating {
+            dependsOn(commonMain)
+            iosSimulatorArm64Main.dependsOn(this)
+            val datetimeVersion = "0.3.2"
+            val kotlinSerializationVersion = "1.3.2"
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion")
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+            }
+        }
+
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosMain by creating {
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
+            val datetimeVersion = "0.2.1"
+            val kotlinSerializationVersion = "1.2.2"
+            val kotlinVersion = "1.5.31"
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinSerializationVersion")
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+                implementation("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
             }
         }
+
         val iosSimulatorArm64Test by getting
         val iosX64Test by getting
         val iosArm64Test by getting
