@@ -35,6 +35,7 @@ kotlin {
         }
 
         val androidMain by getting {
+            dependsOn(commonMain)
             val datetimeVersion = "0.3.2"
             val kotlinSerializationVersion = "1.3.2"
             dependencies {
@@ -50,6 +51,7 @@ kotlin {
         }
 
         val androidTest by getting {
+            dependsOn(commonTest)
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
