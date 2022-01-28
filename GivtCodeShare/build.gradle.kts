@@ -112,4 +112,7 @@ android {
         targetSdk = 31
     }
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    buildTypes {
+        create("production")
+    }
 }
