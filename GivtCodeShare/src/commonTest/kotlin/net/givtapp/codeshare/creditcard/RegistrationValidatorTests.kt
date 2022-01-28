@@ -30,4 +30,12 @@ class RegistrationValidatorTests {
     fun ensureEmailAddressValidates() {
         _registrationValidator
     }
+
+    @Test
+    fun ensurePostalCodeValidates() {
+        _registrationValidator.postalCode = ""
+        assertFalse { _registrationValidator.isValidPostalCode }
+        _registrationValidator.postalCode = "12345"
+        assertTrue { _registrationValidator.isValidPostalCode }
+    }
 }
