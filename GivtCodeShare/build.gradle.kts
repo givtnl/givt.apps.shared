@@ -22,6 +22,7 @@ kotlin {
         framework {
             baseName = "GivtCodeShare"
         }
+        xcodeConfigurationToNativeBuildType["Production"] = org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
     }
 
     val ktorVersion = "1.6.5"
