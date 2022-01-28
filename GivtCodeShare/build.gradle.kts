@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.fir.declarations.builder.buildTypeAlias
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -113,6 +115,8 @@ android {
     }
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     buildTypes {
-        create("production")
+        create("production") {
+            initWith(getByName("release"))
+        }
     }
 }
