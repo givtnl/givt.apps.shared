@@ -11,9 +11,15 @@ import net.givtapp.codeshare.api.Accounts.CreditCard.Register.RegisterCreditCard
 import net.givtapp.codeshare.api.User.Register.RegisterUserCommandBody
 import net.givtapp.codeshare.api.User.UserDetailModel
 import net.givtapp.codeshare.infrastructure.HttpClientFactory
+import kotlin.jvm.JvmStatic
+import kotlin.jvm.Volatile
+import kotlin.native.concurrent.ThreadLocal
 
-class GivtApi {
-    internal val httpClient: HttpClient = HttpClientFactory().createHttpClient("https://apidebug.givtapp.net")
+object GivtApi {
+    lateinit var httpClient: HttpClient
+    fun initialize(baseUrl: String) {
+        httpClient = HttpClientFactory().createHttpClient(baseUrl)
+    }
 
     /**
      * Contains implementations for:
@@ -25,7 +31,7 @@ class GivtApi {
      * Users/Accounts/GET
      */
 
-    inner class User {
+    class User {
         @Throws(Exception::class)
         suspend fun registerUser(registerUserCommandBody: RegisterUserCommandBody): UserDetailModel {
             val response: HttpResponse = httpClient.post {
