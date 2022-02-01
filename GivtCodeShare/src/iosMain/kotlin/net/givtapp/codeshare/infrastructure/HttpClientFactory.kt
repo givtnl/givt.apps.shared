@@ -17,6 +17,7 @@ actual class HttpClientFactory {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
                     prettyPrint = true
+                    ignoreUnknownKeys = true
                 })
             }
             defaultRequest {

@@ -15,9 +15,10 @@ import kotlin.jvm.JvmStatic
 import kotlin.jvm.Volatile
 import kotlin.native.concurrent.ThreadLocal
 
+@ThreadLocal
 object GivtApi {
     lateinit var httpClient: HttpClient
-    fun initialize(baseUrl: String) {
+    fun initSingleton(baseUrl: String) {
         httpClient = HttpClientFactory().createHttpClient(baseUrl)
     }
 
@@ -41,11 +42,11 @@ object GivtApi {
             return response.receive()
         }
         // Accounts
-        inner class Accounts {
+        class Accounts {
             @Throws(Exception::class)
-            suspend fun registerCreditCard(userId: String, bearerToken: String, registerCreditCardCommandBody: RegisterCreditCardCommandBody): RegisterCreditCardCommandResponse {
+            suspend fun registerCreditCard(userId: String, bearerToken: String, registerCreditCardCommandBody: RegisterCreditCardCommandBody): String {
                 val response: HttpResponse = httpClient.post {
-                    url { pathComponents( "api", "v2", "users", userId, "accounts")}
+                    url { pathComponents( "api", "v2", "users", userId, "mandates")}
                     body = registerCreditCardCommandBody
                     headers {
                         header("Authorization", "Bearer $bearerToken")
