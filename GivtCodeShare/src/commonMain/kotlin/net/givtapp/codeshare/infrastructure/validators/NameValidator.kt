@@ -4,7 +4,7 @@ import net.givtapp.codeshare.infrastructure.validators.infrastructure.*
 
 internal class NameValidator : Validator<String?, String> {
     companion object {
-        private val NAME_LENGTH_RANGE = IntRange(2, 32)
+        private val NAME_LENGTH_RANGE = IntRange(2, 26)
     }
     override fun validate(input: String?): ValidationResult<String> {
         if (input == null) return Invalid(NameValidationError.InputIsNull)
