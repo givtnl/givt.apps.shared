@@ -17,7 +17,7 @@
 #
 
 ### Custom by Maarten for MacOS
-java -version 2>&1 | grep 11 || export JAVA_HOME="/usr/local/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home"
+java -version 2>&1 | grep 11 || export JAVA_HOME="/opt/homebrew/opt/openjdk@11"
 
 ##############################################################################
 ##
