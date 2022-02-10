@@ -30,6 +30,9 @@ class RegistrationValidator {
     val isValidLastName: Boolean
         get () = NameValidator().validate(lastName).isValid
 
+    val isValidFullName: Boolean
+        get () = FullNameValidator().validate("$firstName $lastName").isValid
+
     val isValidPostalCode: Boolean
         get() = PostalCodeValidator().invoke(postalCode).isValid
 
