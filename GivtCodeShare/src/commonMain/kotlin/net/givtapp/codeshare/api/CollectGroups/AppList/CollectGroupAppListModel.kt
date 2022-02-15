@@ -9,28 +9,28 @@ class CollectGroupAppListModel(
 
 @Serializable
 class CollectGroupListDetailModel(
-    val N: String,
-    val NS: String,
-    val C: Boolean,
-    val T: Int,
-    val L: List<CollectGroupLocationDetailModel>? = null,
-    val Q: List<CollectGroupQrCodeDetailModel>? = null
+    val N: String, //Name
+    val NS: String, //Namespace
+    val C: Boolean, //Celebrations
+    val T: Int, //Type
+    val L: List<CollectGroupLocationDetailModel>? = null, //Locations
+    val Q: List<CollectGroupQrCodeDetailModel>? = null //QRcodes
 )
 
 @Serializable
 class CollectGroupLocationDetailModel(
-    val N: String? = null,
-    val LA: Double,
-    val LO: Double,
-    val I: String,
-    val R: Double,
-    val DB: String,
-    val DE: String
+    val N: String? = null, //Name
+    val LA: Double, //Latitude
+    val LO: Double, //Longitude
+    val I: String, //Instance
+    val R: Double, //Radius
+    val DB: String, //DateBegin
+    val DE: String //DateEnd
 )
 
 @Serializable
 class CollectGroupQrCodeDetailModel(
-    val N: String? = null,
-    val I: String,
-    val A: Boolean
+    val N: String? = null, //Name
+    val I: String, //Instance
+    val A: Boolean //Active
 )
