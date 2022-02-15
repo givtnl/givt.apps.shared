@@ -23,7 +23,7 @@ class CollectGroupLocationDetailModel(
     val LA: Double, //Latitude
     val LO: Double, //Longitude
     val I: String, //Instance
-    val R: Double, //Radius
+    val R: Int, //Radius
     val DB: String, //DateBegin
     val DE: String //DateEnd
 )
