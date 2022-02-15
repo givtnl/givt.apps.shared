@@ -8,6 +8,7 @@ import io.ktor.http.*
 import net.givtapp.codeshare.api.Accounts.AccountDetailModel
 import net.givtapp.codeshare.api.Accounts.CreditCard.Register.RegisterCreditCardCommandResponse
 import net.givtapp.codeshare.api.Accounts.CreditCard.Register.RegisterCreditCardCommandBody
+import net.givtapp.codeshare.api.CollectGroups.AppList.CollectGroupAppListModel
 import net.givtapp.codeshare.api.User.Register.RegisterUserCommandBody
 import net.givtapp.codeshare.api.User.UserDetailModel
 import net.givtapp.codeshare.infrastructure.HttpClientFactory
@@ -62,6 +63,19 @@ object GivtApi {
                     headers {
                         header("Authorization", "Bearer $bearerToken")
                     }
+                }
+                return response.receive()
+            }
+        }
+    }
+
+    class Organisations {
+
+        class CollectGroups {
+            @Throws(Exception::class)
+            suspend fun getAppList(): CollectGroupAppListModel {
+                val response: HttpResponse = httpClient.get {
+                    url { pathComponents("api", "v2", "collectgroups", "applist-v2") }
                 }
                 return response.receive()
             }
