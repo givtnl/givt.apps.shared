@@ -68,18 +68,5 @@ object GivtApi {
             }
         }
     }
-
-    class Organisations {
-
-        class CollectGroups {
-            @Throws(Exception::class)
-            suspend fun getAppList(): CollectGroupAppListModel {
-                val response: HttpResponse = httpClient.get {
-                    url { pathComponents("api", "v2", "collectgroups", "applist-v2") }
-                }
-                return response.receive()
-            }
-        }
-    }
 }
 
