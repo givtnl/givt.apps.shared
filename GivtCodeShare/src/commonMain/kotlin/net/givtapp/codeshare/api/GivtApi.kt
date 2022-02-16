@@ -6,14 +6,10 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import net.givtapp.codeshare.api.Accounts.AccountDetailModel
-import net.givtapp.codeshare.api.Accounts.CreditCard.Register.RegisterCreditCardCommandResponse
 import net.givtapp.codeshare.api.Accounts.CreditCard.Register.RegisterCreditCardCommandBody
-import net.givtapp.codeshare.api.CollectGroups.AppList.CollectGroupAppListModel
 import net.givtapp.codeshare.api.User.Register.RegisterUserCommandBody
 import net.givtapp.codeshare.api.User.UserDetailModel
 import net.givtapp.codeshare.infrastructure.HttpClientFactory
-import kotlin.jvm.JvmStatic
-import kotlin.jvm.Volatile
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
