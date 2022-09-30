@@ -160,7 +160,7 @@ class CreditCardValidatorTests {
     @Test
     fun ensureExpiryDateValidatesWhenMonthAndYearAreInTheFuture() {
         _creditCardValidator.creditCard.expiryDate.month = 1
-        _creditCardValidator.creditCard.expiryDate.year = 2022
+        _creditCardValidator.creditCard.expiryDate.year = 9999
         assertTrue { _creditCardValidator.expiryDateIsValid() }
     }
 }
