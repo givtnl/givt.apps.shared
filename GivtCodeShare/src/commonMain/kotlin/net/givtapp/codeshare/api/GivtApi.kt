@@ -40,8 +40,18 @@ object GivtApi {
             return response.receive()
         }
 
+        suspend fun getShareUserData(userId: String, bearerToken: String): Boolean {
+            val response: HttpResponse = httpClient.get {
+                url { pathComponents("api", "v2", "users", userId, "sharedata")}
+                headers {
+                    header("Authorization", "Bearer $bearerToken")
+                }
+            }
+            return response.receive()
+        }
+
         @Throws(Exception::class)
-        suspend fun putShareUserData(userId: String, bearerToken: String, putShareUserDataCommandBody: ShareUserDataCommandBody): Any {
+        suspend fun putShareUserData(userId: String, bearerToken: String, putShareUserDataCommandBody: ShareUserDataCommandBody): Boolean {
             val response: HttpResponse = httpClient.put {
                 url { pathComponents("api", "v2", "users", userId, "sharedata")}
                 body = putShareUserDataCommandBody.shareData
