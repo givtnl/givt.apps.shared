@@ -8,6 +8,7 @@ import io.ktor.http.*
 import net.givtapp.codeshare.api.Accounts.AccountDetailModel
 import net.givtapp.codeshare.api.Accounts.CreditCard.Register.RegisterCreditCardCommandBody
 import net.givtapp.codeshare.api.User.Register.RegisterUserCommandBody
+import net.givtapp.codeshare.api.User.ShareUserData.ShareUserDataCommandBody
 import net.givtapp.codeshare.api.User.UserDetailModel
 import net.givtapp.codeshare.infrastructure.HttpClientFactory
 import kotlin.native.concurrent.ThreadLocal
@@ -38,6 +39,19 @@ object GivtApi {
             }
             return response.receive()
         }
+
+        @Throws(Exception::class)
+        suspend fun putShareUserData(userId: String, bearerToken: String, putShareUserDataCommandBody: ShareUserDataCommandBody): Any {
+            val response: HttpResponse = httpClient.put {
+                url { pathComponents("api", "v2", "users", userId, "sharedata")}
+                body = putShareUserDataCommandBody.shareData
+                headers {
+                    header("Authorization", "Bearer $bearerToken")
+                }
+            }
+            return response.receive()
+        }
+
         // Accounts
         class Accounts {
             @Throws(Exception::class)
