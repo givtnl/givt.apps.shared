@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'GivtCodeShare'
-    spec.version                  = '1.2'
+    spec.version                  = '1.3'
     spec.homepage                 = 'https://github.com/givtnl/givt.apps.shared'
     spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
     spec.authors                  = ''
